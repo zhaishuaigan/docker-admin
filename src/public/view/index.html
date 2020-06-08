@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Admin</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style/index.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://unpkg.com/http-vue-loader@1.4.2/src/httpVueLoader.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+</head>
+<body>
+<el-container class="page" id="app">
+    <el-aside class="aside">
+        <view-common-menu @update="updateView"></view-common-menu>
+    </el-aside>
+    <el-main class="main">
+        <div :is="currentView"></div>
+    </el-main>
+</el-container>
+<script>
+    Vue.use(httpVueLoader);
+    var app = new Vue({
+        el: '#app',
+        components: {
+            'view-common-menu': 'url:/view/common/menu.vue',
+            'view-containers-run': 'url:/view/containers/run.vue',
+            'view-containers-stop': 'url:/view/containers/stop.vue',
+            'view-containers-exit': 'url:/view/containers/exit.vue',
+            'view-containers-pause': 'url:/view/containers/pause.vue',
+            'view-images-local': 'url:/view/images/local.vue',
+            'view-images-shop': 'url:/view/images/shop.vue',
+            'view-images-build': 'url:/view/images/build.vue',
+        },
+        data: function () {
+            return {
+                currentView: 'view-containers-run'
+            };
+        },
+        created: function () {
+
+        },
+        methods: {
+            bindEvent: function () {
+            },
+            updateView: function (view) {
+                console.log('index: ', view);
+                this.currentView = view;
+            }
+        }
+    });
+</script>
+</body>
+</html>

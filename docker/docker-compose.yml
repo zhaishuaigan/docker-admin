@@ -1,0 +1,12 @@
+version: '2'
+services:
+  admin:
+    image: admin
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - /data/src:/app
+      - /var/run/docker.sock:/var/run/docker.sock

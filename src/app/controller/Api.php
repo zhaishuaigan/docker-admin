@@ -1,0 +1,44 @@
+<?php
+
+namespace app\controller;
+
+use app\BaseController;
+use app\library\Docker;
+
+class Api extends BaseController
+{
+    public function index()
+    {
+        // TODO:: 权限验证
+        $url = $this->request->url();
+        $url = str_replace('/api', '', $url);
+        $method = $this->request->method();
+        $result = [
+            'data' => null,
+            'info' => [
+                'http_code' => 500
+            ]
+        ];
+        switch ($method) {
+            case 'GET':
+                $result = Docker::get($url);
+                break;
+            case 'POST':
+                $result = Docker::post($url, $this->request->post());
+                break;
+            case 'put':
+                $result = Docker::put($url, $this->request->put());
+                break;
+            case 'delete':
+                $result = Docker::put($url);
+                break;
+        }
+
+        return json($result['data'], $result['info']['http_code']);
+    }
+
+    public function hello($name = 'ThinkPHP6')
+    {
+        return 'hello,' . $name;
+    }
+}

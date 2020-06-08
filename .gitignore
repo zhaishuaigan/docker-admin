@@ -1,0 +1,4 @@
+/.idea
+/docker/.vagrant
+/docker/install.lock
+/docker/ubuntu-xenial-16.04-cloudimg-console.log
