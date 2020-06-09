@@ -1,23 +1,15 @@
 <template>
-    <div class="view">
-        <div class="title">已停止的容器</div>
-        <div class="content">
-            {{name}}
-        </div>
-    </div>
+    <view-containers-list></view-containers-list>
 </template>
 
 <script>
     module.exports = {
+        components: {
+            'view-containers-list': 'url:/view/containers/list.vue'
+        },
         data: function () {
-            return {
-                name: 'hello'
-            };
+            return {};
         },
-        created: function () {
-
-        },
-        methods: {}
     }
 </script>
 

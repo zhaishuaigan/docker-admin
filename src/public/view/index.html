@@ -6,9 +6,13 @@
     <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/style/index.css">
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.26.0/locale/zh-cn.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://unpkg.com/http-vue-loader@1.4.2/src/httpVueLoader.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <script src="/static/api.js"></script>
+    <script src="/static/filter.js"></script>
 </head>
 <body>
 <el-container class="page" id="app">
@@ -25,6 +29,7 @@
         el: '#app',
         components: {
             'view-common-menu': 'url:/view/common/menu.vue',
+            'view-containers-all': 'url:/view/containers/all.vue',
             'view-containers-run': 'url:/view/containers/run.vue',
             'view-containers-stop': 'url:/view/containers/stop.vue',
             'view-containers-exit': 'url:/view/containers/exit.vue',
@@ -35,17 +40,21 @@
         },
         data: function () {
             return {
-                currentView: 'view-containers-run'
+                currentView: 'view-containers-all'
             };
         },
         created: function () {
-
+            var view = location.hash.replace('#', '');
+            if (view) {
+                this.currentView = view;
+            }
         },
         methods: {
             bindEvent: function () {
             },
             updateView: function (view) {
                 console.log('index: ', view);
+                location.hash = view;
                 this.currentView = view;
             }
         }

@@ -26,8 +26,7 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "symfony/var-dumper": "^4.2",
-    "topthink/think-trace": "^1.3"
+    "symfony/var-dumper": "^4.2"
   },
   "autoload": {
     "psr-4": {

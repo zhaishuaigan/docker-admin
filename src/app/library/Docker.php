@@ -51,9 +51,10 @@ class Docker
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
         curl_close($ch);
-        return [
+        $result = [
             'data' => json_decode($result, true),
             'info' => $info
         ];
+        return $result;
     }
 }

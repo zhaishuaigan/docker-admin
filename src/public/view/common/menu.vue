@@ -1,9 +1,10 @@
 <template>
     <div class="menu">
         <div class="title">Docker Admin</div>
-        <el-menu :default-openeds="['containers', 'containers-run']">
+        <el-menu :default-openeds="['containers', 'containers-all']">
             <el-submenu index="containers">
                 <template slot="title"><i class="el-icon-menu"></i>容器管理</template>
+                <el-menu-item index="containers-all" @click="updateView('view-containers-all')">全部容器</el-menu-item>
                 <el-menu-item index="containers-run" @click="updateView('view-containers-run')">正在运行的容器</el-menu-item>
                 <el-menu-item index="containers-exit" @click="updateView('view-containers-exit')">已退出的容器</el-menu-item>
                 <el-menu-item index="containers-pause" @click="updateView('view-containers-pause')">已暂停的容器

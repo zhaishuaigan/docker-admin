@@ -4,6 +4,7 @@ namespace app\controller;
 
 use app\BaseController;
 use app\library\Docker;
+use think\facade\Log;
 
 class Api extends BaseController
 {
@@ -26,12 +27,16 @@ class Api extends BaseController
             case 'POST':
                 $result = Docker::post($url, $this->request->post());
                 break;
-            case 'put':
+            case 'PUT':
                 $result = Docker::put($url, $this->request->put());
                 break;
-            case 'delete':
-                $result = Docker::put($url);
+            case 'DELETE':
+                $result = Docker::delete($url);
                 break;
+        }
+
+        if (env('app_debug')) {
+            Log::write(json_encode($result), 'info');
         }
 
         return json($result['data'], $result['info']['http_code']);
