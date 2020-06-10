@@ -11,7 +11,8 @@
     };
     api.containers = {};
     api.containers.getList = function (params) {
-        return axios.get('/api/containers/json?' + api.buildQuery(params));
+        var params = params ? params : {}
+        return axios.get('/api/containers/json', {params: params});
     };
     api.containers.getAll = function () {
         return api.containers.getList({
@@ -65,7 +66,14 @@
         return axios.get('/api/images/json?' + api.buildQuery(params));
     };
     api.images.search = function (params) {
+        params = params ? params : {};
+        return axios.get('/api/images/search', {params: params});
+    };
+    api.images.pull = function (params) {
         return axios.get('/api/images/search?' + api.buildQuery(params));
+    };
+    api.images.remove = function (id, params) {
+        return axios.delete('/api/images/' + id + '?' + api.buildQuery(params));
     };
 
 

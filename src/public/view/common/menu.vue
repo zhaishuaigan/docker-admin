@@ -13,6 +13,7 @@
             <el-submenu index="images">
                 <template slot="title"><i class="el-icon-menu"></i>镜像管理</template>
                 <el-menu-item index="images-local" @click="updateView('view-images-local')">本地镜像</el-menu-item>
+                <el-menu-item index="images-search" @click="updateView('view-images-search')">镜像搜索</el-menu-item>
                 <el-menu-item index="images-shop" @click="updateView('view-images-shop')">镜像商店</el-menu-item>
                 <el-menu-item index="images-build" @click="updateView('view-images-build')">编译镜像</el-menu-item>
             </el-submenu>
