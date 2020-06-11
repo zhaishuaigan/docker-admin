@@ -2,15 +2,28 @@
     <div class="view">
         <div class="title">本地镜像</div>
         <div class="content">
+            <div class="tools">
+                <el-button type="success" size="small" @click="clearBuildCache()">清除编译缓存</el-button>
+                <el-button type="success" size="small" @click="prune()">清除未使用的镜像</el-button>
+            </div>
             <el-table v-loading="loading" :data="list" border style="max-width: 100%" max-height="600">
                 <el-table-column fixed label="镜像id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.Id.substring(0, 16)}}</span>
+                        <el-tooltip class="item" effect="dark" content="点击复制id" placement="left">
+                            <el-button type="text">{{scope.row.Id.substring(0, 16)}}</el-button>
+                        </el-tooltip>
+
                     </template>
                 </el-table-column>
                 <el-table-column label="镜像名字">
                     <template slot-scope="scope">
-                        <span>{{scope.row.RepoTags.join(',')}}</span>
+                        <el-tooltip class="item" effect="dark" content="点击查看详情" placement="left">
+                            <el-button type="text" @click="inspect(scope.row)">{{scope.row.RepoTags ?
+                                scope.row.RepoTags.join(',')
+                                : ''}}
+                            </el-button>
+                        </el-tooltip>
+
                     </template>
                 </el-table-column>
                 <!--<el-table-column label="容器个数">-->
@@ -54,6 +67,10 @@
                 </el-table-column>
             </el-table>
         </div>
+        <el-dialog title="镜像详情" :value="''" :visible.sync="inspectImage">
+            基本信息
+        </el-dialog>
+
     </div>
 </template>
 
@@ -62,6 +79,7 @@
         data: function () {
             return {
                 loading: true,
+                inspectImage: null,
                 list: []
             };
         },
@@ -79,8 +97,26 @@
             },
             runContainer: function (item) {
             },
-            pull: function (name) {
-
+            inspect: function (item) {
+                api.images.inspect(item.Id)
+                    .then(result => {
+                        console.log(result.data);
+                        this.inspectImage = result.data;
+                    });
+            },
+            clearBuildCache: function () {
+                api.build.prune()
+                    .then(result => {
+                        this.$message.success('清除编译缓存完成.');
+                        this.loadList();
+                    });
+            },
+            prune: function () {
+                api.images.prune()
+                    .then(result => {
+                        this.$message.success('未使用的镜像清理完成.');
+                        this.loadList();
+                    });
             },
             removeImage: function (item) {
                 var self = this;
@@ -127,4 +163,7 @@
 </script>
 
 <style scoped>
+    .tools {
+        padding-bottom: 10px;
+    }
 </style>

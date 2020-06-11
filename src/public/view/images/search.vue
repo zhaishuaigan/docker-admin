@@ -35,7 +35,7 @@
             <el-table v-loading="loading" :data="list" border style="max-width: 100%" max-height="600">
                 <el-table-column label="镜像名字">
                     <template slot-scope="scope">
-                        <span>{{scope.row.name}}</span>
+                        <span @click="inspect(scope.row)">{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="官方">
@@ -56,23 +56,11 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button
-                                @click.native.prevent="void(scope.row)"
+                                @click.native.prevent="inspect(scope.row)"
                                 type="text"
                                 size="small">
                             查看详情
                         </el-button>
-                        <el-button
-                                @click.native.prevent="void(scope.row)"
-                                type="text"
-                                size="small">
-                            拉取
-                        </el-button>
-
-                        <el-dropdown trigger="click">
-                            <el-button type="text" size="small">更多</el-button>
-                            <el-dropdown-menu slot="dropdown">
-                            </el-dropdown-menu>
-                        </el-dropdown>
                     </template>
                 </el-table-column>
             </el-table>
@@ -130,8 +118,12 @@
             },
             runContainer: function (item) {
             },
-            pull: function (name) {
-
+            inspect: function (item) {
+                console.log(item);
+                api.images.inspect(item.name)
+                    .then(result => {
+                        console.log('image:', result.data);
+                    });
             },
             removeImage: function (item) {
                 var self = this;

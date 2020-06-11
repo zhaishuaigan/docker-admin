@@ -65,15 +65,32 @@
     api.images.getList = function (params) {
         return axios.get('/api/images/json?' + api.buildQuery(params));
     };
+
+    api.images.inspect = function (name) {
+        return axios.get('/api/images/' + name + '/json');
+    };
+
     api.images.search = function (params) {
         params = params ? params : {};
         return axios.get('/api/images/search', {params: params});
     };
-    api.images.pull = function (params) {
-        return axios.get('/api/images/search?' + api.buildQuery(params));
+    api.images.create = function (params) {
+        params = params ? params : {};
+        return axios.post('/api/images/create', params);
     };
     api.images.remove = function (id, params) {
         return axios.delete('/api/images/' + id + '?' + api.buildQuery(params));
+    };
+
+    api.images.prune = function () {
+        return axios.post('/api/images/prune');
+    };
+
+
+    api.build = {};
+    api.build.prune = function (params) {
+        params = params ? params : {};
+        return axios.post('/api/build/prune', params);
     };
 
 
