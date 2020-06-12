@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Admin</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .page {
+            padding: 50px 0px;
+            margin: auto;
+            width: 500px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .items {
+            padding: 30px 0px;
+        }
+
+        .finish {
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+</head>
+<body>
+<div class="page" id="app">
+    <h1 class="title">Docker Admin 安装</h1>
+    <div class="step">
+        <div class="items">
+            <div class="step1" v-if="step !== 'finish'">
+                <el-form :label-position="'right'" :model="form" :rules="rules" ref="passwordForm"
+                         @submit.native.prevent
+                         label-width="80px">
+                    <el-form-item label="设置密码" prop="password">
+                        <el-input type="password" v-model="form.password" required></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="password2">
+                        <el-input type="password" v-model="form.password2" required></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" native-type="submitPassword()" @click="submitPassword()">确定
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="finish" v-if="step === 'finish'">
+                配置完成, 点击
+                <el-button type="primary" @click="location.href='/login'">登录</el-button>
+                进入管理界面.
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: function () {
+            var self = this;
+            return {
+                step: 0,
+                form: {
+                    password: '',
+                    password2: '',
+                },
+                rules: {
+                    password: [
+                        {
+                            validator: function (rule, value, callback) {
+                                console.log(rule);
+                                if (value === '') {
+                                    callback(new Error('请输入密码'));
+                                }
+                                callback();
+                            },
+                            trigger: 'blur'
+                        }
+                    ],
+                    password2: [
+                        {
+                            validator: function (rule, value, callback) {
+                                console.log(rule);
+                                if (value === '') {
+                                    callback(new Error('请再次输入密码'));
+                                }
+                                if (self.form.password !== value) {
+                                    callback(new Error('两次输入密码不一致'));
+                                }
+                                callback();
+                            },
+                            trigger: 'blur'
+                        }
+                    ]
+                },
+            };
+        },
+        created: function () {
+        },
+        methods: {
+            bindEvent: function () {
+            },
+            submitPassword: function () {
+                this.$refs['passwordForm'].validate((valid) => {
+                    if (!valid) {
+                        this.$message.error('提交出错, 请根据提示修改资料');
+                        return;
+                    }
+
+                    axios.post('/install/setting', this.form)
+                        .then(result => {
+                            this.$message.success('安装成功');
+                            this.step = 'finish';
+                        })
+                        .catch(result => {
+                            this.$message.error(result.response.data);
+                        });
+
+                });
+            },
+        }
+    });
+</script>
+</body>
+</html>

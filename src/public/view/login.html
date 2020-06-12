@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Admin 登录</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .page {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+</head>
+<body>
+<div class="page" id="app">
+    <el-form :inline="true" :model="form" ref="form"
+             @submit.native.prevent
+             label-width="80px">
+        <el-form-item label="" prop="password">
+            <el-input type="password" v-model="form.password" required placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" native-type="submit()" @click="submit()">登录
+            </el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: function () {
+            var self = this;
+            return {
+                step: 0,
+                form: {
+                    password: '',
+                },
+            };
+        },
+        created: function () {
+        },
+        methods: {
+            submit: function () {
+                if (!this.form.password) {
+                    this.$message.error('请输入密码');
+                    return;
+                }
+
+                axios.post('/login/check', this.form)
+                    .then(result => {
+                        this.$message.success('登录成功');
+                        location.href = '/';
+                    })
+                    .catch(result => {
+                        this.$message.error(result.response.data);
+                    });
+            },
+        }
+    });
+</script>
+</body>
+</html>
