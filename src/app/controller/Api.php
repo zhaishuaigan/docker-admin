@@ -4,13 +4,17 @@ namespace app\controller;
 
 use app\BaseController;
 use app\library\Docker;
+use app\library\Help;
 use think\facade\Log;
 
 class Api extends BaseController
 {
     public function index()
     {
-        // TODO:: 权限验证
+        if (Help::isLogin() === false) {
+            return json('当前处于未登录状态', 403);
+        }
+
         $url = $this->request->url();
         $url = str_replace('/api', '', $url);
         $method = $this->request->method();
