@@ -11,6 +11,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://unpkg.com/http-vue-loader@1.4.2/src/httpVueLoader.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
     <script src="/static/api.js"></script>
     <script src="/static/filter.js"></script>
 </head>
@@ -51,9 +52,23 @@
             if (view) {
                 this.currentView = view;
             }
+
+            this.bindClipboard();
         },
+
         methods: {
-            bindEvent: function () {
+            bindClipboard: function () {
+                var self = this;
+                setTimeout(() => {
+                    var clipboard = new ClipboardJS('.clipboard');
+                    clipboard.on('success', function (e) {
+                        self.$message.success('复制成功');
+                    });
+
+                    clipboard.on('error', function (e) {
+                        self.$message.error('复制失败');
+                    });
+                }, 1000);
             },
             updateView: function (view) {
                 console.log('index: ', view);

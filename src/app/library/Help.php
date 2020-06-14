@@ -78,6 +78,12 @@ class Help
         if ($token === self::makeToken()) {
             return true;
         }
+        if (app()->request->header('access-token') === self::getApiToken()) {
+            return true;
+        }
+        if (app()->request->param('access-token') === self::getApiToken()) {
+            return true;
+        }
         return false;
     }
 

@@ -56,10 +56,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button
-                                @click.native.prevent="inspect(scope.row)"
+                                @click.native.prevent="pull(scope.row)"
                                 type="text"
                                 size="small">
-                            查看详情
+                            拉取镜像
                         </el-button>
                     </template>
                 </el-table-column>
@@ -125,45 +125,18 @@
                         console.log('image:', result.data);
                     });
             },
-            removeImage: function (item) {
-                var self = this;
 
-                self.$confirm('确定要删除这个镜像吗?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'error'
-                }).then(() => {
-                    api.images.remove(item.Id)
-                        .then(function (result) {
-                            self.loadList();
-                            console.log('success: ', result.data);
-                        })
-                        .catch(function (result) {
-                            self.loadList();
-                            console.log('error: ', result.data);
-                            self.$message.error('删除镜像失败, 镜像正在被容器使用, 不能被删除.');
-                        });
-                });
-            },
-            forceRemoveImage: function (item) {
-                var self = this;
-
-                self.$confirm('确定要强制删除这个镜像吗? 此操作将一并删除已经停止运行的容器, 请谨慎操作.', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'error'
-                }).then(() => {
-                    api.images.remove(item.Id, {force: true})
-                        .then(function (result) {
-                            self.loadList();
-                            console.log('success: ', result.data);
-                        })
-                        .catch(function (result) {
-                            self.loadList();
-                            console.log('error: ', result.data);
-                            self.$message.error('删除镜像失败, 镜像正在被容器使用, 不能被删除.');
-                        });
-                });
+            pull: function (item) {
+                this.$messate.error('功能未实现');
+                return;
+                var params = {
+                    fromImage: item.name,
+                    tag: 'latest'
+                };
+                axios.post('/api/images/create', params)
+                    .then(function (result) {
+                        console.log(result.data);
+                    });
             },
         }
     }

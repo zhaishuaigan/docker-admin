@@ -5,7 +5,12 @@
             <el-table v-loading="loading" :data="list" border style="max-width: 100%" max-height="600">
                 <el-table-column fixed label="容器id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.Id.substring(0, 16)}}</span>
+                        <el-tooltip class="item" effect="dark" content="点击复制id" placement="left">
+                            <el-button type="text" class="clipboard"
+                                       :data-clipboard-text="scope.row.Id">{{scope.row.Id.substring(0, 16)}}
+                            </el-button>
+                        </el-tooltip>
+
                     </template>
                 </el-table-column>
                 <el-table-column label="容器名字">

@@ -15,6 +15,5 @@ Route::get('think', function () {
 });
 
 Route::group('api', function () {
-
     Route::miss('api/index');
-});
+})->allowCrossDomain();

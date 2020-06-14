@@ -10,7 +10,9 @@
                 <el-table-column fixed label="镜像id">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" content="点击复制id" placement="left">
-                            <el-button type="text">{{scope.row.Id.substring(0, 16)}}</el-button>
+                            <el-button type="text" class="clipboard"
+                                       :data-clipboard-text="scope.row.Id">{{scope.row.Id.substring(0, 16)}}
+                            </el-button>
                         </el-tooltip>
 
                     </template>

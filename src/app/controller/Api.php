@@ -12,7 +12,7 @@ class Api extends BaseController
     public function index()
     {
         if (Help::isLogin() === false) {
-            return json('当前处于未登录状态', 403);
+            return json('当前处于未登录状态', 401);
         }
 
         $url = $this->request->url();
@@ -21,7 +21,7 @@ class Api extends BaseController
         $result = [
             'data' => null,
             'info' => [
-                'http_code' => 500
+                'http_code' => 405
             ]
         ];
         switch ($method) {
