@@ -127,14 +127,16 @@
             },
 
             pull: function (item) {
-                this.$messate.error('功能未实现');
-                return;
+                var self = this;
                 var params = {
                     fromImage: item.name,
                     tag: 'latest'
                 };
-                axios.post('/api/images/create', params)
+                params = api.buildQuery(params);
+                self.$message.success('拉取任务创建成功, 稍后可在本地镜像列表查看.');
+                axios.post('/api/images/create?' + params)
                     .then(function (result) {
+                        self.$message.success('镜像 ['+item.name+'] 拉取成功.');
                         console.log(result.data);
                     });
             },

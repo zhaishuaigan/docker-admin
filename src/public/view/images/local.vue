@@ -3,6 +3,7 @@
         <div class="title">本地镜像</div>
         <div class="content">
             <div class="tools">
+                <el-button type="success" size="small" @click="loadList()">刷新</el-button>
                 <el-button type="success" size="small" @click="clearBuildCache()">清除编译缓存</el-button>
                 <el-button type="success" size="small" @click="prune()">清除未使用的镜像</el-button>
             </div>
@@ -55,7 +56,9 @@
                         <el-dropdown trigger="click">
                             <el-button type="text" size="small">更多</el-button>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native.prevent="removeImage(scope.row)">删除
+                                <el-dropdown-item @click.native.prevent="updateImage(scope.row)">更新镜像
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native.prevent="removeImage(scope.row)">删除镜像
                                 </el-dropdown-item>
                                 <!--<el-dropdown-item @click.native.prevent="forceRemoveImage(scope.row)">-->
                                 <!--<el-tooltip class="item" effect="dark" content="如果有正在使用此镜像的容器会被并一起删除, 请谨慎操作."-->
@@ -155,10 +158,32 @@
                         })
                         .catch(function (result) {
                             self.loadList();
-                            console.log('error: ', result.data);
                             self.$message.error('删除镜像失败, 镜像正在被容器使用, 不能被删除.');
                         });
                 });
+            },
+            updateImage: function (item) {
+                var self = this;
+
+                if (!item.RepoTags.length) {
+                    self.$message.error('此镜像没有tag, 不能更新.');
+                    return;
+                }
+                var img = item.RepoTags[0].split(':');
+                var params = {
+                    fromImage: img[0],
+                    tag: img[1]
+                };
+                params = api.buildQuery(params);
+                self.$message.success('更新任务创建成功, 更新完成后会有消息提醒.');
+                axios.post('/api/images/create?' + params)
+                    .then(function (result) {
+                        self.$message.success('镜像 [' + img.join(':') + '] 更新成功.');
+                        self.loadList();
+                    })
+                    .catch(result => {
+                        self.$message.error('镜像 [' + img.join(':') + '] 更新失败: ' + result.response.data.message);
+                    });
             },
         }
     }
