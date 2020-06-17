@@ -36,12 +36,24 @@ class Docker
 
         switch ($method) {
             case 'POST':
+                $params = json_encode($params);
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json; charset=utf-8',
+                    'Content-Length:' . strlen($params)
+                ]);
                 break;
             case 'PUT':
+                $params = json_encode($params);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json; charset=utf-8',
+                    'Content-Length:' . strlen($params)
+                ]);
                 break;
             case 'DELETE':
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');

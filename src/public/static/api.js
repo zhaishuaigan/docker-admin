@@ -44,7 +44,9 @@
     api.containers.start = function (id) {
         return axios.post('/api/containers/' + id + '/start');
     };
-
+    api.containers.create = function (params) {
+        return axios.post('/api/containers/create', params);
+    };
     api.containers.stop = function (id) {
         return axios.post('/api/containers/' + id + '/stop');
     };
@@ -60,6 +62,7 @@
     api.containers.remove = function (id) {
         return axios.delete('/api/containers/' + id);
     };
+
 
     api.images = {};
     api.images.getList = function (params) {

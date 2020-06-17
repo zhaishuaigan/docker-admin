@@ -29,10 +29,12 @@ class Api extends BaseController
                 $result = Docker::get($url);
                 break;
             case 'POST':
-                $result = Docker::post($url, $this->request->post());
+                $params = file_get_contents('php://input');
+                $result = Docker::post($url, json_decode($params));
                 break;
             case 'PUT':
-                $result = Docker::put($url, $this->request->put());
+                $params = file_get_contents('php://input');
+                $result = Docker::put($url, json_decode($params));
                 break;
             case 'DELETE':
                 $result = Docker::delete($url);

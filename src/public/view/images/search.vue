@@ -3,15 +3,15 @@
         <div class="title">搜索镜像</div>
         <div class="content">
 
-            <el-form :inline="true" class="form">
+            <el-form :inline="true" @submit.native.prevent class="form">
                 <el-form-item label="关键词:">
                     <el-input v-model="form.term" placeholder="请输入要搜索的镜像名称"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="search()">搜索</el-button>
+                    <el-button type="primary" native-type="submit()" @click="search()">搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-form :inline="true" class="form" size="mini">
+            <el-form :inline="true" @submit.native.prevent class="form" size="mini">
                 <el-form-item label="返回条数">
                     <el-select v-model="form.limit" class="limit" placeholder="设置返回条数">
                         <el-option label="20条" value="20"></el-option>
@@ -35,7 +35,18 @@
             <el-table v-loading="loading" :data="list" border style="max-width: 100%" max-height="600">
                 <el-table-column label="镜像名字">
                     <template slot-scope="scope">
-                        <span @click="inspect(scope.row)">{{scope.row.name}}</span>
+                        <a class="el-button el-button--text"
+                           target="_blank"
+                           v-if="scope.row.is_official"
+                           :href="'https://hub.docker.com/_/' + scope.row.name">
+                            {{scope.row.name}}
+                        </a>
+                        <a class="el-button el-button--text"
+                           target="_blank"
+                           v-if="!scope.row.is_official"
+                           :href="'https://hub.docker.com/repository/docker/' + scope.row.name">
+                            {{scope.row.name}}
+                        </a>
                     </template>
                 </el-table-column>
                 <el-table-column label="官方">
@@ -118,25 +129,28 @@
             },
             runContainer: function (item) {
             },
-            inspect: function (item) {
-                console.log(item);
-                api.images.inspect(item.name)
-                    .then(result => {
-                        console.log('image:', result.data);
-                    });
-            },
-
             pull: function (item) {
                 var self = this;
-                var params = {
-                    fromImage: item.name,
-                    tag: 'latest'
+
+                var options = {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /\w+/,
+                    inputErrorMessage: '标签格式不正确',
+                    inputValue: 'latest'
                 };
-                params = api.buildQuery(params);
-                self.$message.success('拉取任务创建成功, 稍后可在本地镜像列表查看.');
-                axios.post('/api/images/create?' + params)
-                    .then(function (result) {
-                        self.$message.success('镜像 ['+item.name+'] 拉取成功.');
+                self.$prompt('请输入要拉取的标签', '提示', options)
+                    .then(({value}) => {
+                        var params = {
+                            fromImage: item.name,
+                            tag: value
+                        };
+                        params = api.buildQuery(params);
+                        self.$message.success('拉取任务创建成功, 稍后可在本地镜像列表查看.');
+                        return axios.post('/api/images/create?' + params)
+                    })
+                    .then(result => {
+                        self.$message.success('镜像 [' + item.name + '] 拉取成功.');
                         console.log(result.data);
                     });
             },

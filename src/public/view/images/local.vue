@@ -101,6 +101,37 @@
                 });
             },
             runContainer: function (item) {
+                var self = this;
+                if (!item.RepoTags) {
+                    self.$message.error('没有检测到镜像标签, 不能创建容器');
+                    return;
+                }
+                var params = {
+                    Image: item.RepoTags[0],
+                    ExposedPorts: {
+                        '80/tcp': {}
+                    },
+                    HostConfig: {
+                        PortBindings: {
+                            "80/tcp": [{
+                                "HostPort": "8888"
+                            }]
+                        }
+                    }
+                };
+                self.$message.success('正在创建容器...');
+                api.containers.create(params)
+                    .then(result => {
+                        self.$message.success('容器创建成功');
+                        self.$message.success('正在启动容器');
+                        console.log('create callback: ', result);
+                        return api.containers.start(result.data.Id);
+                    })
+                    .then(result => {
+                        console.log('start callback: ', result);
+                        self.$message.success('容器启动成功');
+
+                    });
             },
             inspect: function (item) {
                 api.images.inspect(item.Id)
