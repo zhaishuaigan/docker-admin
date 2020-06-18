@@ -17,6 +17,14 @@
                 <el-menu-item index="images-shop" @click="updateView('view-images-shop')">镜像商店</el-menu-item>
                 <el-menu-item index="images-build" @click="updateView('view-images-build')">编译镜像</el-menu-item>
             </el-submenu>
+            <el-submenu index="networks">
+                <template slot="title"><i class="el-icon-menu"></i>网络管理</template>
+                <el-menu-item index="networks-index" @click="updateView('view-networks-index')">全部网络</el-menu-item>
+            </el-submenu>
+            <el-submenu index="volumes">
+                <template slot="title"><i class="el-icon-menu"></i>数据卷管理</template>
+                <el-menu-item index="volumes-index" @click="updateView('view-volumes-index')">全部数据卷</el-menu-item>
+            </el-submenu>
             <el-submenu index="setting">
                 <template slot="title"><i class="el-icon-setting"></i>设置</template>
                 <el-menu-item index="setting-password" @click="updateView('view-setting-password')">密码设置</el-menu-item>

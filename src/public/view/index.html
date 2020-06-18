@@ -28,20 +28,7 @@
     Vue.use(httpVueLoader);
     var app = new Vue({
         el: '#app',
-        components: {
-            'view-common-menu': 'url:/view/common/menu.vue',
-            'view-containers-all': 'url:/view/containers/all.vue',
-            'view-containers-run': 'url:/view/containers/run.vue',
-            'view-containers-stop': 'url:/view/containers/stop.vue',
-            'view-containers-exit': 'url:/view/containers/exit.vue',
-            'view-containers-pause': 'url:/view/containers/pause.vue',
-            'view-images-local': 'url:/view/images/local.vue',
-            'view-images-search': 'url:/view/images/search.vue',
-            'view-images-shop': 'url:/view/images/shop.vue',
-            'view-images-build': 'url:/view/images/build.vue',
-            'view-setting-password': 'url:/view/setting/password.vue',
-            'view-setting-token': 'url:/view/setting/token.vue',
-        },
+        components: $components,
         data: function () {
             return {
                 currentView: 'view-containers-all'
@@ -52,10 +39,8 @@
             if (view) {
                 this.currentView = view;
             }
-
             this.bindClipboard();
         },
-
         methods: {
             bindClipboard: function () {
                 var self = this;

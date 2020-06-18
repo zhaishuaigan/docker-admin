@@ -1,6 +1,9 @@
 Vue.filter('time', function (value) {
     return moment.unix(value).fromNow();
 });
+Vue.filter('stringTime', function (value) {
+    return moment(value).fromNow();
+});
 
 Vue.filter('fileSize', function (value) {
     if (null === value || value === '') {

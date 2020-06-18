@@ -103,4 +103,17 @@ class Help
         $tokenFile = '/app/runtime/api_token';
         file_put_contents($tokenFile, $token);
     }
+
+    public static function getComponents()
+    {
+        $files = glob('/app/public/view/*/*.vue');
+        $result = [];
+        foreach ($files as $file) {
+            $file = str_replace('/app/public/', '', $file);
+            $key = str_replace(['/', '.vue'], ['-', ''], $file);
+            $url = 'url:/' . $file;
+            $result[$key] = $url;
+        }
+        return json_encode($result);
+    }
 }

@@ -49,7 +49,7 @@
                         </el-button>
 
                         <el-button
-                                v-if="scope.row.State === 'running'"
+                                v-if="scope.row.State === 'running' || scope.row.State === 'restarting'"
                                 @click.native.prevent="stopContainer(scope.row)"
                                 type="text"
                                 size="small">
