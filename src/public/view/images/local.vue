@@ -102,6 +102,10 @@
             },
             runContainer: function (item) {
                 var self = this;
+
+                self.$message.error('创建容器功能暂未实现!');
+                return;
+
                 if (!item.RepoTags) {
                     self.$message.error('没有检测到镜像标签, 不能创建容器');
                     return;
